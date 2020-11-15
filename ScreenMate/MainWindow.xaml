@@ -1,0 +1,21 @@
+﻿<Window x:Class="ScreenMate.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:local="clr-namespace:ScreenMate"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        mc:Ignorable="d"
+        x:Name="Mate"
+        Title="MainWindow" Height="100" Width="67"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        Background="#00000000"
+        Topmost="True">
+    <Grid>
+        <Image Source="image\benis.png"/>
+        <tb:TaskbarIcon x:Name="toolbarTray" Visibility="Visible" ToolTipText="Screen Fucking Mate"/>
+
+
+    </Grid>
+</Window>
