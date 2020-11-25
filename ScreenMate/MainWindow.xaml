@@ -12,8 +12,12 @@
         WindowStyle="None"
         Background="#00000000"
         Topmost="True">
-    <Grid>
-        <Image Source="image\benis.png"/>
+        <Grid>
+        <Image x:Name="img" Source="image\benis.png" >
+            <Image.RenderTransform>
+                <RotateTransform x:Name="rotate" CenterX="0" CenterY="0" Angle="0"></RotateTransform>
+            </Image.RenderTransform>
+        </Image>
         <tb:TaskbarIcon x:Name="toolbarTray" Visibility="Visible" ToolTipText="Screen Fucking Mate"/>
 
 

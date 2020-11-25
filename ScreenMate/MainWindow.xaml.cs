@@ -40,9 +40,15 @@ namespace ScreenMate
         bool kick = false;
         //Коэффициент перемещения (для определения, вверх или вниз перемещается персонаж)
         int koeff;
-        //Инициализация таймера
+        //Инициализация таймеров
         System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
-
+        System.Windows.Threading.DispatcherTimer timerChangeMode = new System.Windows.Threading.DispatcherTimer();
+        //Режим зверька
+        int mateMode = 0;
+        //Инициализация спрайтов
+        BitmapImage ded = new BitmapImage(new Uri("image/ded.png", UriKind.Relative));
+        BitmapImage benis = new BitmapImage(new Uri("image/benis.png", UriKind.Relative));
+        BitmapImage vortex = new BitmapImage(new Uri("image/vortex.png", UriKind.Relative));
         /// <summary>
         /// Функция создания окна
         /// </summary>
@@ -50,13 +56,20 @@ namespace ScreenMate
         {
             InitializeComponent();
             //Установка размеров окна
-            Mate.Height = height;
-            Mate.Width = width;
-            //Установка интервала перемещения окна (в мс)
+            Mate.Height = height + 20;
+            Mate.Width = width + 20;
+            //img.Source = vortex;
+            //rotate.CenterX = (width + 22) / 2;
+            //rotate.CenterY = (height) / 2;
+            //Установка интервала перемещения окна (в с)
             timer.Interval = TimeSpan.FromSeconds(0.01);
             timer.Start();
             //Добавление функции на завершение времени таймера
             timer.Tick += TickTimer;
+
+            timerChangeMode.Interval = TimeSpan.FromSeconds(5);
+            timerChangeMode.Start();
+            timerChangeMode.Tick += TimerChangeMode;
 
         }
 
@@ -82,8 +95,8 @@ namespace ScreenMate
             moveX = cursorLocation.X - location.X;
             moveY = cursorLocation.Y - location.Y;
             koeff = 1;
-            
-
+            //rotate.Angle += 5;
+            //Хуета для отталквания курсора
             if (kick)
             {
                 this.MoveMouse(moveMouseX, -moveMouseY);
@@ -94,13 +107,14 @@ namespace ScreenMate
                     kick = false;
                 }
             }
-            if (location.X + deltaMouse > cursorLocation.X && location.X - deltaMouse < cursorLocation.X && location.Y + deltaMouse > cursorLocation.Y && location.Y - deltaMouse < cursorLocation.Y)
+            if (location.X + deltaMouse > cursorLocation.X - 25 && location.X - deltaMouse < cursorLocation.X - 25 && location.Y + deltaMouse > cursorLocation.Y - 25 && location.Y - deltaMouse < cursorLocation.Y - 25)
             {
                 kick = true;
                 moveMouseX = 30;
                 moveMouseY = 30;
 
             }
+
             //Если левая клавиша не зажата (т.е. животное не перетаскивается)
             if (Mouse.LeftButton != MouseButtonState.Pressed)
             {
@@ -149,6 +163,40 @@ namespace ScreenMate
             System.Windows.Forms.Cursor.Position = new System.Drawing.Point(Convert.ToInt32(System.Windows.Forms.Cursor.Position.X + dx), Convert.ToInt32(System.Windows.Forms.Cursor.Position.Y + dy));
         }
 
+        private void TimerChangeMode(object sender, EventArgs e)
+        {
+            timerChangeMode.Interval = TimeSpan.FromSeconds(0.01);
+            timer.Tick -= TickTimer;
+            rotate.CenterX = (width + 22) / 2;
+            rotate.CenterY = (height) / 2;
+            if (flyingTime >= 120)
+            {
+                timerChangeMode.Interval = TimeSpan.FromSeconds(5);
+                timer.Tick += TickTimer;
+                flyingTime = 0;
+                rotate.Angle = 0;
+
+                mateMode = new Random().Next(0, 3);
+                if (mateMode == 0)
+                {
+                    img.Source = benis;
+                }
+                else if (mateMode == 1)
+                {
+                    img.Source = ded;
+                }
+                else
+                {
+                    img.Source = vortex;
+                }
+            }
+            else
+            {
+                flyingTime += 1;
+            }
+            rotate.Angle += flyingTime;
+            
+        }
     }
 
 
