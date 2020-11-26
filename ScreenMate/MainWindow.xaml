@@ -11,7 +11,9 @@
         AllowsTransparency="True"
         WindowStyle="None"
         Background="#00000000"
-        Topmost="True">
+        Topmost="True"
+        MaxHeight="100" MaxWidth="67"
+        >
         <Grid>
         <Image x:Name="img" Source="image\benis.png" >
             <Image.RenderTransform>
@@ -22,7 +24,5 @@
             </Image.RenderTransform>
         </Image>
         <tb:TaskbarIcon x:Name="toolbarTray" Visibility="Visible" ToolTipText="Screen Fucking Mate"/>
-
-
     </Grid>
 </Window>

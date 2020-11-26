@@ -58,6 +58,8 @@ namespace ScreenMate
             //Установка размеров окна
             Mate.Height = height + 20;
             Mate.Width = width + 20;
+            Mate.MaxHeight = height + 20;
+            Mate.MaxWidth = width + 20;
             img.Source = benis;
             //rotate.CenterX = (width + 22) / 2;
             //rotate.CenterY = (height) / 2;
@@ -109,19 +111,22 @@ namespace ScreenMate
             cursorLocation = new Point(System.Windows.Forms.Control.MousePosition.X - 22, System.Windows.Forms.Control.MousePosition.Y - 38);
             moveX = cursorLocation.X - (location.X + width / 2 - 14);
             moveY = cursorLocation.Y - (location.Y + height / 2 - 25);
-            Top += 5 * (moveY) / Math.Sqrt(Math.Pow(moveX, 2) + Math.Pow(moveY, 2));
-            Left += 5 * (moveX) / Math.Sqrt(Math.Pow(moveX, 2) + Math.Pow(moveY, 2));
-            if (moveX < 0)
+            if (Mouse.LeftButton != MouseButtonState.Pressed)
             {
-                scale.CenterX = width / 2;
-                scale.ScaleX = -1;
+                Top += 5 * (moveY) / Math.Sqrt(Math.Pow(moveX, 2) + Math.Pow(moveY, 2));
+                Left += 5 * (moveX) / Math.Sqrt(Math.Pow(moveX, 2) + Math.Pow(moveY, 2));
+                if (moveX < 0)
+                {
+                    scale.CenterX = width / 2;
+                    scale.ScaleX = -1;
+                }
+                else
+                {
+                    scale.CenterX = 0;
+                    scale.ScaleX = 1;
+                }
+                Kicking();
             }
-            else
-            {
-                scale.CenterX = 0;
-                scale.ScaleX = 1;
-            }
-            Kicking();
         }
 
         /// <summary>
@@ -137,12 +142,13 @@ namespace ScreenMate
             moveY = cursorLocation.Y - (location.Y + height / 2 - 25);
             koeff = 1;
             //rotate.Angle += 5;
-            //Хуета для отталквания курсора
-            Kicking();
+            
 
             //Если левая клавиша не зажата (т.е. животное не перетаскивается)
             if (Mouse.LeftButton != MouseButtonState.Pressed)
             {
+                //Хуета для отталквания курсора
+                Kicking();
                 Left += 5 * (moveX) / Math.Sqrt(Math.Pow(moveX, 2) + Math.Pow(moveY, 2));
                 //Проверка, в воздухе ли животное
                 if (Top < System.Windows.SystemParameters.PrimaryScreenHeight - 140)
