@@ -102,15 +102,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="image\ded.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="image\benis.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="image\vortex.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\ball.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
