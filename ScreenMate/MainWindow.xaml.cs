@@ -67,7 +67,7 @@ namespace ScreenMate
             //Добавление функции на завершение времени таймера
             timer.Tick += TickerTimerBenis;
 
-            timerChangeMode.Interval = TimeSpan.FromSeconds(5);
+            timerChangeMode.Interval = TimeSpan.FromSeconds(25);
             timerChangeMode.Start();
             timerChangeMode.Tick += TimerChangeMode;
 
@@ -232,7 +232,7 @@ namespace ScreenMate
 
             if (flyingTime >= 120)
             {
-                timerChangeMode.Interval = TimeSpan.FromSeconds(5);
+                timerChangeMode.Interval = TimeSpan.FromSeconds(25);
                 flyingTime = 0;
                 rotate.Angle = 0;
 
