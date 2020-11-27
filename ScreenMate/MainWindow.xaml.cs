@@ -45,7 +45,7 @@ namespace ScreenMate
         System.Windows.Threading.DispatcherTimer timerChangeMode = new System.Windows.Threading.DispatcherTimer();
         //Режим зверька
         int mateMode = 0;
-        //Инициализация спрайтов
+        //Инициализация спрайтовв
         BitmapImage ball = new BitmapImage(new Uri("image/ball.png", UriKind.Relative));
         BitmapImage benis = new BitmapImage(new Uri("image/benis.png", UriKind.Relative));
         BitmapImage vortex = new BitmapImage(new Uri("image/vortex.png", UriKind.Relative));
