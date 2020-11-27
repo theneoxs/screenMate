@@ -69,7 +69,7 @@ namespace ScreenMate
             //Добавление функции на завершение времени таймера
             timer.Tick += TickerTimerBenis;
 
-            timerChangeMode.Interval = TimeSpan.FromSeconds(25);
+            timerChangeMode.Interval = TimeSpan.FromSeconds(5);
             timerChangeMode.Start();
             timerChangeMode.Tick += TimerChangeMode;
 
@@ -216,7 +216,7 @@ namespace ScreenMate
             }
             catch
             {
-                System.Windows.Forms.Cursor.Position = new System.Drawing.Point(100, 100);
+                System.Windows.Forms.Cursor.Position = new System.Drawing.Point(Convert.ToInt32(System.Windows.Forms.Cursor.Position.X - 100), Convert.ToInt32(System.Windows.Forms.Cursor.Position.Y - 100));
             }
         }
 
@@ -235,36 +235,40 @@ namespace ScreenMate
             scale.ScaleX = 1;
             rotate.CenterX = (width + 22) / 2;
             rotate.CenterY = (height) / 2;
-
-            if (flyingTime >= 120)
+            if (Mouse.LeftButton != MouseButtonState.Pressed)
             {
-                timerChangeMode.Interval = TimeSpan.FromSeconds(25);
-                flyingTime = 0;
-                rotate.Angle = 0;
+                if (flyingTime >= 120)
+                {
+                    timerChangeMode.Interval = TimeSpan.FromSeconds(5);
+                    flyingTime = 0;
+                    rotate.Angle = 0;
 
-                mateMode = new Random().Next(0, 3);
-                if (mateMode == 0)
-                {
-                    timer.Tick += TickerTimerBenis;
-                    img.Source = benis;
-                }
-                else if (mateMode == 1)
-                {
-                    timer.Tick += TickTimerBall;
-                    img.Source = ball;
+                    mateMode = new Random().Next(0, 3);
+                    if (mateMode == 0)
+                    {
+                        timer.Tick += TickerTimerVortex;
+                        img.Source = vortex;
+                        
+                    }
+                    else if (mateMode == 1)
+                    {
+                        timer.Tick += TickTimerBall;
+                        img.Source = ball;
+                    }
+                    else
+                    {
+                        timer.Tick += TickerTimerBenis;
+                        img.Source = benis;
+                    }
                 }
                 else
                 {
-                    timer.Tick += TickerTimerVortex;
-                    img.Source = vortex;
+                    flyingTime += 1;
+                    Kicking();
                 }
             }
-            else
-            {
-                flyingTime += 1;
-            }
             rotate.Angle += flyingTime;
-            Kicking();
+            
 
 
         }
