@@ -24,6 +24,7 @@
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
-        <tb:TaskbarIcon x:Name="toolbarTray" Visibility="Visible" ToolTipText="Screen Fucking Mate"/>
+
+        <!--<tb:TaskbarIcon x:Name="toolbarTray" Visibility="Visible" ToolTipText="Screen Fucking Mate"/>-->
     </Grid>
 </Window>

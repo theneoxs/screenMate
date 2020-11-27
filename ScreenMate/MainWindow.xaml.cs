@@ -49,6 +49,7 @@ namespace ScreenMate
         BitmapImage ball = new BitmapImage(new Uri("image/ball.png", UriKind.Relative));
         BitmapImage benis = new BitmapImage(new Uri("image/benis.png", UriKind.Relative));
         BitmapImage vortex = new BitmapImage(new Uri("image/vortex.png", UriKind.Relative));
+
         /// <summary>
         /// Функция создания окна
         /// </summary>
@@ -60,15 +61,14 @@ namespace ScreenMate
             Mate.Width = width + 20;
             Mate.MaxHeight = height + 20;
             Mate.MaxWidth = width + 20;
+            //Стартовый зверь
             img.Source = benis;
-            //rotate.CenterX = (width + 22) / 2;
-            //rotate.CenterY = (height) / 2;
-            //Установка интервала перемещения окна (в с)
+            //Установка интервала действия персонажа
             timer.Interval = TimeSpan.FromSeconds(0.01);
             timer.Start();
-            //Добавление функции на завершение времени таймера
             timer.Tick += TickerTimerBenis;
-
+            timer.Tick += ControlWindowSize;
+            //Таймер на смену режима
             timerChangeMode.Interval = TimeSpan.FromSeconds(25);
             timerChangeMode.Start();
             timerChangeMode.Tick += TimerChangeMode;
@@ -94,9 +94,11 @@ namespace ScreenMate
         {
             location = PointToScreen(new Point(0, 0));
             cursorLocation = new Point(System.Windows.Forms.Control.MousePosition.X - 22, System.Windows.Forms.Control.MousePosition.Y - 38);
+            //Вектор от воронки до курсора
             moveX = cursorLocation.X - (location.X + width / 2 - 14);
             moveY = cursorLocation.Y - (location.Y + height / 2 - 25);
             rotate.Angle += 5;
+            //Перемещение курсора к воронке
             MoveMouse(-5 * (moveX) / Math.Sqrt(Math.Pow(moveX, 2) + Math.Pow(moveY, 2)), -5 * (moveY) / Math.Sqrt(Math.Pow(moveX, 2) + Math.Pow(moveY, 2)));
         }
 
@@ -109,12 +111,15 @@ namespace ScreenMate
         {
             location = PointToScreen(new Point(0, 0));
             cursorLocation = new Point(System.Windows.Forms.Control.MousePosition.X - 22, System.Windows.Forms.Control.MousePosition.Y - 38);
+            //Вектор от бениса до курсора
             moveX = cursorLocation.X - (location.X + width / 2 - 14);
             moveY = cursorLocation.Y - (location.Y + height / 2 - 25);
             if (Mouse.LeftButton != MouseButtonState.Pressed)
             {
+                //Перемещение бениса к курсору  
                 Top += 5 * (moveY) / Math.Sqrt(Math.Pow(moveX, 2) + Math.Pow(moveY, 2));
                 Left += 5 * (moveX) / Math.Sqrt(Math.Pow(moveX, 2) + Math.Pow(moveY, 2));
+                //Логика поворота
                 if (moveX < 0)
                 {
                     scale.CenterX = width / 2;
@@ -125,6 +130,7 @@ namespace ScreenMate
                     scale.CenterX = 0;
                     scale.ScaleX = 1;
                 }
+                //Отталкивание курсора
                 Kicking();
             }
         }
@@ -138,16 +144,15 @@ namespace ScreenMate
         {
             location = PointToScreen(new Point(0, 0));
             cursorLocation = new Point(System.Windows.Forms.Control.MousePosition.X - 22, System.Windows.Forms.Control.MousePosition.Y - 38);
+            //Вектор от мяча до курсора
             moveX = cursorLocation.X - (location.X + width / 2 - 14);
             moveY = cursorLocation.Y - (location.Y + height / 2 - 25);
+            //Коэффициент направления перемещения
             koeff = 1;
-            //rotate.Angle += 5;
-            
 
             //Если левая клавиша не зажата (т.е. животное не перетаскивается)
             if (Mouse.LeftButton != MouseButtonState.Pressed)
             {
-                //Хуета для отталквания курсора
                 Kicking();
                 Left += 5 * (moveX) / Math.Sqrt(Math.Pow(moveX, 2) + Math.Pow(moveY, 2));
                 //Проверка, в воздухе ли животное
@@ -190,7 +195,7 @@ namespace ScreenMate
                 MoveMouse(moveMouseX, moveMouseY);
                 moveMouseX /= 2;
                 moveMouseY /= 2;
-                if (moveMouseX == 0 && moveMouseY == 0)
+                if (moveMouseX <= 1 && moveMouseY <= 1)
                 {
                     kick = false;
                 }
@@ -204,7 +209,7 @@ namespace ScreenMate
         }
 
         /// <summary>
-        /// Метод перемещения курсора мыши на определенное расстояние
+        /// Метод перемещения курсора мыши на определенное расстояние (с обработкой исключения)
         /// </summary>
         /// <param name="dx">Перемещение по оси X</param>
         /// <param name="dy">Перемещение по оси Y</param>
@@ -227,28 +232,30 @@ namespace ScreenMate
         /// <param name="e">Эвент для таймера</param>
         private void TimerChangeMode(object sender, EventArgs e)
         {
-            
             timerChangeMode.Interval = TimeSpan.FromSeconds(0.01);
+            //Снятие всех режимов
             timer.Tick -= TickTimerBall;
             timer.Tick -= TickerTimerBenis;
             timer.Tick -= TickerTimerVortex;
             scale.ScaleX = 1;
+            //Смещение центра (для вращения)
             rotate.CenterX = (width + 22) / 2;
             rotate.CenterY = (height) / 2;
             if (Mouse.LeftButton != MouseButtonState.Pressed)
             {
+                //Если прошло достаточно времени поворота - смена режима
                 if (flyingTime >= 120)
                 {
                     timerChangeMode.Interval = TimeSpan.FromSeconds(25);
                     flyingTime = 0;
                     rotate.Angle = 0;
-
+                    //Выбор режима
                     mateMode = new Random().Next(0, 3);
                     if (mateMode == 0)
                     {
                         timer.Tick += TickerTimerVortex;
                         img.Source = vortex;
-                        
+
                     }
                     else if (mateMode == 1)
                     {
@@ -268,13 +275,21 @@ namespace ScreenMate
                 }
             }
             rotate.Angle += flyingTime;
-            
+
+        }
+
+        /// <summary>
+        /// Проверка расширения экрана
+        /// </summary>
+        /// <param name="sender">Объект расширения</param>
+        /// <param name="e">Событие для таймера</param>
+        private void ControlWindowSize(object sender, EventArgs e)
+        {
+            //Контроль расширения (для восстановления)
             if (Mate.WindowState != WindowState.Normal)
             {
                 Mate.WindowState = WindowState.Normal;
             }
-
-
         }
     }
 
