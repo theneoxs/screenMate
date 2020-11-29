@@ -44,7 +44,7 @@ namespace ScreenMate
         System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
         System.Windows.Threading.DispatcherTimer timerChangeMode = new System.Windows.Threading.DispatcherTimer();
         //Режим зверька
-        int mateMode = 0;
+        int mateMode = 2;
         //Инициализация спрайтовв
         BitmapImage ball = new BitmapImage(new Uri("image/ball.png", UriKind.Relative));
         BitmapImage benis = new BitmapImage(new Uri("image/benis.png", UriKind.Relative));
@@ -224,7 +224,6 @@ namespace ScreenMate
                 System.Windows.Forms.Cursor.Position = new System.Drawing.Point(Convert.ToInt32(System.Windows.Forms.Cursor.Position.X - 100), Convert.ToInt32(System.Windows.Forms.Cursor.Position.Y - 100));
             }
         }
-
         /// <summary>
         /// Метод смены режима персонажа через некоторое время
         /// </summary>
